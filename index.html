@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ange-Flowers - Beautiful Flower Delivery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #6bff8d;
+            --accent: #ffb56b;
+            --light: #fff9f4;
+            --dark: #333333;
+            --success: #4CAF50;
+            --uganda-yellow: #FCDC04;
+            --uganda-red: #D90000;
+            --uganda-black: #000000;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            padding-bottom: 80px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--uganda-red), var(--uganda-yellow));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 32px;
+        }
+
+        .tagline {
+            font-style: italic;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .search-bar {
+            margin: 15px 20px;
+            display: flex;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 12px 20px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .search-bar button {
+            background: var(--uganda-red);
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            cursor: pointer;
+        }
+
+        .categories {
+            display: flex;
+            overflow-x: auto;
+            padding: 15px 10px;
+            gap: 15px;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category {
+            background: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 14px;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category.active {
+            background: var(--uganda-red);
+            color: white;
+        }
+
+        .category:hover {
+            transform: translateY(-2px);
+        }
+
+        .featured {
+            padding: 10px 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin: 15px 0;
+            padding-left: 10px;
+            border-left: 4px solid var(--uganda-red);
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 10px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 150px;
+            width: 100%;
+            background-color: #ffecec;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--uganda-red);
+            font-size: 40px;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            color: var(--uganda-red);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .add-to-cart {
+            background: var(--uganda-red);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #ff5252;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px 0;
+            color: #888;
+            font-size: 12px;
+            transition: color 0.3s;
+        }
+
+        .nav-item.active {
+            color: var(--uganda-red);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: 5px;
+            right: 30%;
+            background: var(--uganda-red);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner {
+            background: linear-gradient(to right, var(--uganda-red), var(--uganda-yellow));
+            margin: 15px 20px;
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .banner-content {
+            max-width: 60%;
+        }
+
+        .banner-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .banner-button {
+            background: white;
+            color: var(--uganda-red);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .offer-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--uganda-yellow);
+            color: var(--uganda-black);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .currency {
+            font-size: 14px;
+            vertical-align: super;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .close {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
+        .payment-option.active {
+            border-color: var(--uganda-red);
+            background-color: #fff9f9;
+        }
+        
+        .payment-option i {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+        
+        .checkout-btn {
+            background: var(--uganda-red);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 30px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .mtn-money {
+            color: #ffcc00;
+        }
+        
+        .airtel-money {
+            color: #e60000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-spa"></i>
+                Ange-Flowers
+            </div>
+            <div class="tagline">Beautiful flowers for special moments</div>
+        </header>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Search for flowers...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="categories">
+            <div class="category active">All</div>
+            <div class="category">Roses</div>
+            <div class="category">Tulips</div>
+            <div class="category">Lilies</div>
+            <div class="category">Orchids</div>
+            <div class="category">Seasonal</div>
+            <div class="category">Birthday</div>
+            <div class="category">Wedding</div>
+        </div>
+
+        <div class="banner">
+            <div class="banner-content">
+                <div class="banner-title">Special Offer!</div>
+                <p>Get 15% off on your first order</p>
+            </div>
+            <button class="banner-button" onclick="showShop()">Shop Now</button>
+        </div>
+
+        <div class="featured">
+            <h2 class="section-title">Popular Bouquets</h2>
+            <div class="products">
+                <div class="product">
+                    <div class="product-image">
+                        <img src="flower1.png" alt="Red Romance" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Red Romance</div>
+                        <div class="product-price">140,000<span class="currency">UGX</span></div>
+                        <button class="add-to-cart" onclick="addToCart('Red Romance', 140000)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="offer-badge">Sale</div>
+                    <div class="product-image">
+                        <img src="flower2.png" alt="Spring Tulips" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Spring Tulips</div>
+                        <div class="product-price">120,000<span class="currency">UGX</span></div>
+                        <button class="add-to-cart" onclick="addToCart('Spring Tulips', 120000)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="flower3.png" alt="White Elegance" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">White Elegance</div>
+                        <div class="product-price">160,000<span class="currency">UGX</span></div>
+                        <button class="add-to-cart" onclick="addToCart('White Elegance', 160000)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="offer-badge">Popular</div>
+                    <div class="product-image">
+                        <img src="flower4.png" alt="Tropical Mix" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Tropical Mix</div>
+                        <div class="product-price">180,000<span class="currency">UGX</span></div>
+                        <button class="add-to-cart" onclick="addToCart('Tropical Mix', 180000)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="featured">
+            <h2 class="section-title">Special Occasions</h2>
+            <div class="products">
+                <div class="product">
+                    <div class="product-image">
+                        <img src="flower5.png" alt="Birthday Bliss" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Birthday Bliss</div>
+                        <div class="product-price">150,000<span class="currency">UGX</span></div>
+                        <button class="add-to-cart" onclick="addToCart('Birthday Bliss', 150000)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <div class="product-image">
+                        <img src="flower6.png" alt="Wedding Elegance" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">Wedding Elegance</div>
+                        <div class="product-price">250,000<span class="currency">UGX</span></div>
+                        <button class="add-to-cart" onclick="addToCart('Wedding Elegance', 250000)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Cart</h2>
+                <span class="close" onclick="closeModal('cartModal')">&times;</span>
+            </div>
+            <div id="cartItems">
+                <!-- Cart items will be added here dynamically -->
+            </div>
+            <div id="cartTotal" style="text-align: right; margin: 15px 0; font-weight: bold;">
+                Total: 0 UGX
+            </div>
+            <button class="checkout-btn" onclick="showCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Checkout</h2>
+                <span class="close" onclick="closeModal('checkoutModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter your phone number">
+            </div>
+            <div class="form-group">
+                <label for="address">Delivery Address</label>
+                <textarea id="address" placeholder="Enter delivery address"></textarea>
+            </div>
+            <h3>Select Payment Method</h3>
+            
+            <div class="payment-option" onclick="selectPayment('mtn')">
+                <i class="fas fa-mobile-alt mtn-money"></i>
+                <div>
+                    <div>MTN Mobile Money</div>
+                    <small>Pay with your MTN number</small>
+                </div>
+            </div>
+            
+            <div class="payment-option" onclick="selectPayment('airtel')">
+                <i class="fas fa-mobile-alt airtel-money"></i>
+                <div>
+                    <div>Airtel Money</div>
+                    <small>Pay with your Airtel number</small>
+                </div>
+            </div>
+            
+            <div class="payment-option" onclick="selectPayment('cash')">
+                <i class="fas fa-money-bill-wave"></i>
+                <div>
+                    <div>Cash on Delivery</div>
+                    <small>Pay when you receive your order</small>
+                </div>
+            </div>
+            
+            <button class="checkout-btn" onclick="placeOrder()">Complete Order</button>
+        </div>
+    </div>
+
+    <!-- Order Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Order Confirmed!</h2>
+                <span class="close" onclick="closeModal('confirmationModal')">&times;</span>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <i class="fas fa-check-circle" style="font-size: 50px; color: var(--success);"></i>
+                <p style="margin: 20px 0;">Thank you for your order! Your flowers will be delivered soon.</p>
+                <p>For Mobile Money payments, please send to:<br>
+                <strong>MTN: 0772887722</strong></p>
+                <button class="checkout-btn" onclick="closeModal('confirmationModal')">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Shop</span>
+        </div>
+        <div class="nav-item" onclick="showCart()">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+            <div class="cart-count">0</div>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-heart"></i>
+            <span>Wishlist</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </div>
+    </div>
+
+    <script>
+        // Cart data
+        let cart = [];
+        let cartCount = 0;
+        
+        // Function to add items to cart
+        function addToCart(name, price) {
+            // Check if item already in cart
+            const existingItem = cart.find(item => item.name === name);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            // Update cart count
+            cartCount += 1;
+            document.querySelector('.cart-count').textContent = cartCount;
+            
+            // Show confirmation
+            alert(`${name} added to cart!`);
+        }
+        
+        // Function to show cart modal
+        function showCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            // Clear previous items
+            cartItems.innerHTML = '';
+            
+            // Add items to cart
+            let total = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div>${item.name} x${item.quantity}</div>
+                    <div>${itemTotal.toLocaleString()} UGX</div>
+                `;
+                
+                cartItems.appendChild(cartItem);
+            });
+            
+            // Update total
+            cartTotal.textContent = `Total: ${total.toLocaleString()} UGX`;
+            
+            // Show modal
+            document.getElementById('cartModal').style.display = 'flex';
+        }
+        
+        // Function to show checkout
+        function showCheckout() {
+            closeModal('cartModal');
+            document.getElementById('checkoutModal').style.display = 'flex';
+        }
+        
+        // Function to select payment method
+        function selectPayment(method) {
+            const options = document.querySelectorAll('.payment-option');
+            options.forEach(option => option.classList.remove('active'));
+            
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Function to place order
+        function placeOrder() {
+            // Validate form
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            
+            if (!name || !phone || !address) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Close checkout modal
+            closeModal('checkoutModal');
+            
+            // Show confirmation modal
+            document.getElementById('confirmationModal').style.display = 'flex';
+            
+            // Clear cart
+            cart = [];
+            cartCount = 0;
+            document.querySelector('.cart-count').textContent = cartCount;
+        }
+        
+        // Function to close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Function to show shop
+        function showShop() {
+            document.querySelector('.categories').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Initialize categories
+        document.querySelectorAll('.category').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.category').forEach(el => {
+                    el.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // Initialize search
+        document.querySelector('.search-bar button').addEventListener('click', function() {
+            const query = document.querySelector('.search-bar input').value;
+            alert(`Searching for: ${query}`);
+        });
+        
+        // Initialize nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    el.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
